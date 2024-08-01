@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>upload</title>
+</head>
+
+<body>
+  <form id="form" method="post">
+    <label for="file">choose file:</label>
+    <input type="file" id="file-input" name="file" multiple>
+    <br><input type="submit" value="log">
+  </form>
+  <div class="form-response">
+    <div id="status-div"></div>
+    <h3 id="form-msg"></h3>
+  </div>
+
+</body>
+<script>
+  let statusDiv = document.querySelector("#status-div");
+  let formMsg = document.querySelector("#form-msg");
+
+  async function sendFiles() {
+    let form = document.querySelector("#form");
+    let formData = new FormData(form);
+
+    const res = await fetch("http://localhost:3000/upload", {
+      method: "POST", body: formData
+    });
+    let data = await res.json();
+    formMsg.innerHTML = data.msg;
+    if (!res.ok) {
+      statusDiv.innerHTML = res.status;
+      throw {
+        message: data.msg,
+        status: res.status,
+        statusText: res.statusText
+      }
+    } else {
+      statusDiv.innerHTML = "";
+    }
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    sendFiles()
+  });
+
+</script>
+
+</html>
