@@ -27,7 +27,7 @@
     let form = document.querySelector("#form");
     let formData = new FormData(form);
 
-    const res = await fetch("http://localhost:3000/upload", {
+    const res = await fetch("https://upload-imgs-with-express.vercel.app/upload", {
       method: "POST", body: formData
     });
     let data = await res.json();
